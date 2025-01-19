@@ -22,3 +22,12 @@ type CreateUserRequest struct {
 type CreateUserResponse struct {
 	Success bool `bson:"success" json:"success"`
 }
+
+type LoginRequest struct {
+	Username string `bson:"username" json:"username"`
+	Password string `bson:"password" json:"password"`
+}
+
+type LoginResponse struct {
+	Success bool `bson:"success" json:"success"`
+}

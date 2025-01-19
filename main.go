@@ -30,6 +30,7 @@ func main() {
 
 	http.HandleFunc("/api/validate/username", userHandlers.ValidateUsernameHandler)
 	http.HandleFunc("/api/users/create", userHandlers.CreateUserHandler)
+	http.HandleFunc("/api/users/login", userHandlers.LoginHandler)
 
 	certFile := "/etc/letsencrypt/live/journeyapp.me/fullchain.pem"
 	keyFile := "/etc/letsencrypt/live/journeyapp.me/privkey.pem"
