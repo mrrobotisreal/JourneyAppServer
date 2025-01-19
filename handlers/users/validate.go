@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 	"net/http"
 	"time"
 )
@@ -41,10 +42,16 @@ func validateUsername(req types.ValidateUsernameRequest) (types.ValidateUsername
 	defer cancel()
 
 	collection := db.MongoClient.Database(db.DbName).Collection(db.UserCollection)
-	
+
 	var userResult types.User
 	err := collection.FindOne(ctx, bson.M{"username": req.Username}).Decode(&userResult)
 	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return types.ValidateUsernameResponse{
+				UsernameAvailable: true,
+			}, nil
+		}
+
 		fmt.Println("Error finding user in the database:", err)
 		return types.ValidateUsernameResponse{
 			UsernameAvailable: false,
@@ -52,6 +59,6 @@ func validateUsername(req types.ValidateUsernameRequest) (types.ValidateUsername
 	}
 
 	return types.ValidateUsernameResponse{
-		UsernameAvailable: true,
+		UsernameAvailable: false,
 	}, nil
 }
