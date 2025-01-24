@@ -11,8 +11,8 @@ import (
 
 var s3Client *s3.Client
 
-func init() {
-	cfg, err := config.LoadDefaultConfig(context.TODO())
+func Init() {
+	cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion("us-west-2"))
 	if err != nil {
 		panic(fmt.Errorf("unable to load AWS config: %w", err))
 	}

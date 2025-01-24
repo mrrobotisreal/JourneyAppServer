@@ -15,6 +15,9 @@ import (
 )
 
 func main() {
+	aws.Init()
+	fmt.Println("AWS initialized successfully!")
+
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
