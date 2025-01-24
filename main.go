@@ -1,6 +1,7 @@
 package main
 
 import (
+	"JourneyAppServer/aws"
 	"JourneyAppServer/db"
 	entriesHandlers "JourneyAppServer/handlers/entries"
 	userHandlers "JourneyAppServer/handlers/users"
@@ -34,7 +35,7 @@ func main() {
 	http.HandleFunc("/api/users/login", userHandlers.LoginHandler)
 	http.HandleFunc("/api/entries/create", entriesHandlers.CreateNewEntryHandler)
 	http.HandleFunc("/api/entries/update", entriesHandlers.UpdateEntryHandler)
-	http.HandleFunc("/api/entries/getPresignedURL", PresignHandler)
+	http.HandleFunc("/api/entries/getPresignedURL", aws.PresignHandler)
 
 	certFile := "/etc/letsencrypt/live/journeyapp.me/fullchain.pem"
 	keyFile := "/etc/letsencrypt/live/journeyapp.me/privkey.pem"
