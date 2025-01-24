@@ -49,7 +49,7 @@ func PresignHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	key := fmt.Sprintf("%s/%s/%s", username, uuid, filename)
+	key := fmt.Sprintf("%s/%s/%s/%s", "images", username, uuid, filename)
 	fmt.Println("Key:", key)
 	url, err := GeneratePresignedURL("my-journey-app", key)
 	if err != nil {
