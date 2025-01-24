@@ -2,6 +2,7 @@ package main
 
 import (
 	"JourneyAppServer/db"
+	entriesHandlers "JourneyAppServer/handlers/entries"
 	userHandlers "JourneyAppServer/handlers/users"
 	"context"
 	"fmt"
@@ -31,6 +32,9 @@ func main() {
 	http.HandleFunc("/api/validate/username", userHandlers.ValidateUsernameHandler)
 	http.HandleFunc("/api/users/create", userHandlers.CreateUserHandler)
 	http.HandleFunc("/api/users/login", userHandlers.LoginHandler)
+	http.HandleFunc("/api/entries/create", entriesHandlers.CreateNewEntryHandler)
+	http.HandleFunc("/api/entries/update", entriesHandlers.UpdateEntryHandler)
+	http.HandleFunc("/api/entries/getPresignedURL", PresignHandler)
 
 	certFile := "/etc/letsencrypt/live/journeyapp.me/fullchain.pem"
 	keyFile := "/etc/letsencrypt/live/journeyapp.me/privkey.pem"
