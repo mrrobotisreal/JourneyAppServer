@@ -15,9 +15,6 @@ import (
 )
 
 func main() {
-	//aws.Init()
-	//fmt.Println("AWS initialized successfully!")
-
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -33,9 +30,13 @@ func main() {
 		}
 	}()
 
+	// Login & Users
 	http.HandleFunc("/api/validate/username", userHandlers.ValidateUsernameHandler)
 	http.HandleFunc("/api/users/create", userHandlers.CreateUserHandler)
 	http.HandleFunc("/api/users/login", userHandlers.LoginHandler)
+
+	// Entries
+	http.HandleFunc("/api/entries/list", entriesHandlers.ListEntriesHandler)
 	http.HandleFunc("/api/entries/create", entriesHandlers.CreateNewEntryHandler)
 	http.HandleFunc("/api/entries/update", entriesHandlers.UpdateEntryHandler)
 	http.HandleFunc("/api/entries/getPresignedURL", aws.PresignHandler)
