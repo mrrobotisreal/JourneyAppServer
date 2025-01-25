@@ -142,7 +142,7 @@ func listEntries(params types.ListEntriesParams) ([]types.EntryListItem, error) 
 
 	projectStage := bson.D{{
 		"$project", bson.D{
-			{"id", "$uuid"},
+			{"id", "$id"},
 			{"text", 1},
 			{"timestamp", 1},
 			{"locations", 1},
