@@ -34,6 +34,7 @@ func main() {
 	http.HandleFunc("/api/validate/username", userHandlers.ValidateUsernameHandler)
 	http.HandleFunc("/api/users/create", userHandlers.CreateUserHandler)
 	http.HandleFunc("/api/users/login", userHandlers.LoginHandler)
+	http.HandleFunc("/api/users/list", userHandlers.ListUsersHandler)
 
 	// Entries
 	http.HandleFunc("/api/entries/list", entriesHandlers.ListEntriesHandler)

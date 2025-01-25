@@ -6,6 +6,10 @@ type User struct {
 	Salt     string `bson:"salt" json:"salt"`
 }
 
+type UserListItem struct {
+	Username string `bson:"username" json:"username"`
+}
+
 type ValidateUsernameRequest struct {
 	Username string `bson:"username" json:"username"`
 }
