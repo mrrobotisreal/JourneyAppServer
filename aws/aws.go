@@ -52,7 +52,7 @@ func PresignHandler(w http.ResponseWriter, r *http.Request) {
 
 	key := fmt.Sprintf("%s/%s/%s/%s", "images", username, uuid, filename)
 	fmt.Println("Key:", key)
-	url, err := GeneratePresignedURL("my-journey-app", key)
+	url, err := GeneratePresignedURL("journey-app", key)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -64,7 +64,7 @@ func PresignHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func generatePresignedGetURL(key string) (string, error) {
-	bucket := "my-journey-app"
+	bucket := "journey-app"
 	presignClient := s3.NewPresignClient(s3Client)
 	req, err := presignClient.PresignGetObject(context.TODO(), &s3.GetObjectInput{
 		Bucket: &bucket,
