@@ -69,7 +69,7 @@ func generatePresignedGetURL(key string) (string, error) {
 	req, err := presignClient.PresignGetObject(context.TODO(), &s3.GetObjectInput{
 		Bucket: &bucket,
 		Key:    &key,
-	}, s3.WithPresignExpires(60*time.Minute))
+	}, s3.WithPresignExpires(5*time.Minute))
 	if err != nil {
 		return "", err
 	}
