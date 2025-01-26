@@ -3,11 +3,11 @@ package aws
 import (
 	"context"
 	"fmt"
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"net/http"
 	"time"
+
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
 var s3Client *s3.Client
@@ -64,10 +64,11 @@ func PresignHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func generatePresignedGetURL(key string) (string, error) {
+	bucket := "my-journey-app"
 	presignClient := s3.NewPresignClient(s3Client)
 	req, err := presignClient.PresignGetObject(context.TODO(), &s3.GetObjectInput{
-		Bucket: aws.String("my-journey-app"),
-		Key:    aws.String(key),
+		Bucket: &bucket,
+		Key:    &key,
 	}, s3.WithPresignExpires(60*time.Minute))
 	if err != nil {
 		return "", err
