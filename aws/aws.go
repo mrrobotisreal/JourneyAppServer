@@ -3,6 +3,7 @@ package aws
 import (
 	"context"
 	"fmt"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"net/http"
@@ -57,6 +58,40 @@ func PresignHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Println("Url:", url)
+
+	w.Header().Set("Content-Type", "application/json")
+	fmt.Fprintf(w, `{"url": %q}`, url)
+}
+
+func generatePresignedGetURL(key string) (string, error) {
+	presignClient := s3.NewPresignClient(s3Client)
+	req, err := presignClient.PresignGetObject(context.TODO(), &s3.GetObjectInput{
+		Bucket: aws.String("my-journey-app"),
+		Key:    aws.String(key),
+	}, s3.WithPresignExpires(60*time.Minute))
+	if err != nil {
+		return "", err
+	}
+	return req.URL, nil
+}
+
+func GetPresignedHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		return
+	}
+
+	key := r.URL.Query().Get("key")
+	if key == "" {
+		http.Error(w, "Missing required param \"key\"", http.StatusBadRequest)
+		return
+	}
+
+	url, err := generatePresignedGetURL(key)
+	if err != nil {
+		http.Error(w, "Error generating pre-signed GET URL", http.StatusInternalServerError)
+		return
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 	fmt.Fprintf(w, `{"url": %q}`, url)

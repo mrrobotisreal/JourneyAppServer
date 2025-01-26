@@ -41,6 +41,7 @@ func main() {
 	http.HandleFunc("/api/entries/create", entriesHandlers.CreateNewEntryHandler)
 	http.HandleFunc("/api/entries/update", entriesHandlers.UpdateEntryHandler)
 	http.HandleFunc("/api/entries/getPresignedURL", aws.PresignHandler)
+	http.HandleFunc("/api/entries/getImageURL", aws.GetPresignedHandler)
 
 	certFile := "/etc/letsencrypt/live/journeyapp.me/fullchain.pem"
 	keyFile := "/etc/letsencrypt/live/journeyapp.me/privkey.pem"
