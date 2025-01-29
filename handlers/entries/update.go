@@ -44,18 +44,16 @@ func updateEntry(req types.UpdateEntryRequest) (types.UpdateEntryResponse, error
 		update["text"] = req.Text
 	}
 
-	if len(req.Locations) > 0 {
+	if req.Locations != nil && len(req.Locations) > 0 {
 		update["locations"] = req.Locations
 	}
 
-	if len(req.Tags) > 0 {
+	if req.Tags != nil && len(req.Tags) > 0 {
 		update["tags"] = req.Tags
 	}
 
-	if len(req.Images) > 0 {
+	if req.Images != nil && len(req.Images) > 0 {
 		update["images"] = req.Images
-	} else {
-		update["images"] = make([]string, 0)
 	}
 
 	collection := db.MongoClient.Database(db.DbName).Collection(db.EntriesCollection)

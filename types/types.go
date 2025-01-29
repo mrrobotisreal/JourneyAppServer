@@ -61,6 +61,7 @@ type CreateNewEntryRequest struct {
 	Timestamp string         `bson:"timestamp" json:"timestamp"`
 	Locations []LocationData `bson:"locations" json:"locations"`
 	Tags      []TagData      `bson:"tags" json:"tags"`
+	Images    []string       `bson:"images" json:"images"`
 }
 
 type CreateNewEntryResponse struct {

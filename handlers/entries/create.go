@@ -24,6 +24,16 @@ func CreateNewEntryHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if req.Locations == nil || len(req.Locations) <= 0 {
+		req.Locations = make([]types.LocationData, 0)
+	}
+	if req.Tags == nil || len(req.Tags) <= 0 {
+		req.Tags = make([]types.TagData, 0)
+	}
+	if req.Images == nil || len(req.Images) <= 0 {
+		req.Images = make([]string, 0)
+	}
+
 	response, err := createNewEntry(req)
 	if err != nil {
 		http.Error(w, "Error creating new entry", http.StatusInternalServerError)
