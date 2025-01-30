@@ -52,7 +52,7 @@ type LocationData struct {
 
 type TagData struct {
 	Key   string `bson:"key" json:"key"`
-	Value string `bson:"value" json:"value"`
+	Value string `bson:"value,omitempty" json:"value,omitempty"`
 }
 
 type CreateNewEntryRequest struct {
@@ -113,3 +113,18 @@ type ListEntriesParams struct {
 type GetEntryRequest struct{}
 
 type GetEntryResponse struct{}
+
+type SearchEntriesRequest struct {
+	User        string         `bson:"user" json:"user"`
+	Page        int64          `bson:"page" json:"page"`
+	Limit       int64          `bson:"limit" json:"limit"`
+	SearchQuery string         `bson:"searchQuery" json:"searchQuery"`
+	Locations   []LocationData `bson:"locations" json:"locations"`
+	Tags        []TagData      `bson:"tags" json:"tags"`
+	SortRule    string         `bson:"sortRule" json:"sortRule"`
+	Timeframe   string         `bson:"timeframe" json:"timeframe"`
+	FromDate    string         `bson:"fromDate" json:"fromDate"`
+	ToDate      string         `bson:"toDate" json:"toDate"`
+}
+
+type SearchEntriesResponse struct{} // May not need this. TODO: remove if not needed
