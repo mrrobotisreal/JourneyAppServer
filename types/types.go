@@ -1,5 +1,7 @@
 package types
 
+import "time"
+
 type User struct {
 	Username string `bson:"username" json:"username"`
 	Password string `bson:"password" json:"password"`
@@ -58,7 +60,7 @@ type TagData struct {
 type CreateNewEntryRequest struct {
 	Username  string         `bson:"username" json:"username"`
 	Text      string         `bson:"text" json:"text"`
-	Timestamp string         `bson:"timestamp" json:"timestamp"`
+	Timestamp time.Time      `bson:"timestamp" json:"timestamp"`
 	Locations []LocationData `bson:"locations" json:"locations"`
 	Tags      []TagData      `bson:"tags" json:"tags"`
 	Images    []string       `bson:"images" json:"images"`
@@ -72,7 +74,7 @@ type UpdateEntryRequest struct {
 	ID        string         `bson:"id" json:"id"`
 	Username  string         `bson:"username" json:"username"`
 	Text      string         `bson:"text" json:"text"`
-	Timestamp string         `bson:"timestamp" json:"timestamp"`
+	Timestamp time.Time      `bson:"timestamp" json:"timestamp"`
 	Locations []LocationData `bson:"locations" json:"locations"`
 	Tags      []TagData      `bson:"tags" json:"tags"`
 	Images    []string       `bson:"images" json:"images"`
@@ -86,7 +88,7 @@ type Entry struct {
 	ID        string         `bson:"id" json:"id"`
 	Username  string         `bson:"username" json:"username"`
 	Text      string         `bson:"text" json:"text"`
-	Timestamp string         `bson:"timestamp" json:"timestamp"`
+	Timestamp time.Time      `bson:"timestamp" json:"timestamp"`
 	Locations []LocationData `bson:"locations" json:"locations"`
 	Tags      []TagData      `bson:"tags" json:"tags"`
 	Images    []string       `bson:"images" json:"images"`
@@ -95,7 +97,7 @@ type Entry struct {
 type EntryListItem struct {
 	ID        string         `bson:"id" json:"id"`
 	Text      string         `bson:"text" json:"text"`
-	Timestamp string         `bson:"timestamp" json:"timestamp"`
+	Timestamp time.Time      `bson:"timestamp" json:"timestamp"`
 	Locations []LocationData `bson:"locations" json:"locations"`
 	Tags      []TagData      `bson:"tags" json:"tags"`
 	Images    []string       `bson:"images" json:"images"`
