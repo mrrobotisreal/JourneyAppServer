@@ -18,7 +18,7 @@ func FixTimestampHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprintf(w, `{"success": %v`, response)
+	fmt.Fprintf(w, `{"success": %v}`, response)
 }
 
 func fixTimestamp() (bool, error) {
@@ -32,7 +32,9 @@ func fixTimestamp() (bool, error) {
 	updatePipeline := mongo.Pipeline{
 		{
 			{"$set", bson.D{
-				{"$toDate", "$timestamp"},
+				{"timestamp", bson.D{
+					{"$toDate", "$timestamp"},
+				}},
 			}},
 		},
 	}
