@@ -44,6 +44,8 @@ func main() {
 	http.HandleFunc("/api/entries/getImageURL", aws.GetPresignedHandler)
 	http.HandleFunc("/api/entries/delete", entriesHandlers.DeleteEntryHandler)
 	http.HandleFunc("/api/entries/search", entriesHandlers.SearchEntriesHandler)
+	http.HandleFunc("/api/entries/listUniqueLocations", entriesHandlers.ListUniqueLocationsHandler)
+	http.HandleFunc("/api/entries/listUniqueTags", entriesHandlers.ListUniqueTagsHandler)
 	//http.HandleFunc("/fix", entriesHandlers.FixTimestampHandler)
 
 	certFile := "/etc/letsencrypt/live/journeyapp.me/fullchain.pem"
