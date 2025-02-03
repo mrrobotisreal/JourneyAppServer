@@ -97,8 +97,8 @@ func ValidateAPIKeyMiddleware(next http.HandlerFunc) http.HandlerFunc {
 
 		_, err = collection.UpdateOne(
 			ctx,
-			bson.M{"api_key.key": apiKey},
-			bson.M{"$set": bson.M{"api_key.last_used": time.Now()}},
+			bson.M{"apiKey.key": apiKey},
+			bson.M{"$set": bson.M{"apiKey.last_used": time.Now()}},
 		)
 		if err != nil {
 			fmt.Printf("Error updating API key last used time: %v\n", err)
