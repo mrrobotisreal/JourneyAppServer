@@ -8,11 +8,12 @@ import (
 	"JourneyAppServer/middleware"
 	"context"
 	"fmt"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"net/http"
 	"time"
+
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func main() {
@@ -44,7 +45,7 @@ func main() {
 	http.HandleFunc("/api/entries/create", entriesHandlers.CreateNewEntryHandler)
 	http.HandleFunc("/api/entries/update", entriesHandlers.UpdateEntryHandler)
 	http.HandleFunc("/api/entries/getPresignedURL", aws.PresignHandler)
-	http.HandleFunc("/api/entries/getImageURL", aws.GetPresignedHandler)
+	http.HandleFunc("/api/entries/getImageURL", middleware.CombinedAuthMiddleware(aws.GetPresignedHandler))
 	http.HandleFunc("/api/entries/delete", entriesHandlers.DeleteEntryHandler)
 	http.HandleFunc("/api/entries/search", entriesHandlers.SearchEntriesHandler)
 	http.HandleFunc("/api/entries/listUniqueLocations", entriesHandlers.ListUniqueLocationsHandler)
