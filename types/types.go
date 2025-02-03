@@ -2,10 +2,30 @@ package types
 
 import "time"
 
+type contextKey string
+
+const (
+	UsernameContextKey contextKey = "username"
+	APIKeyContextKey   contextKey = "apiKey"
+)
+
+type ErrorResponse struct {
+	Error   string `json:"error"`
+	Message string `json:"message"`
+}
+
+type APIKey struct {
+	Key       string    `bson:"key" json:"key"`
+	Created   time.Time `bson:"created" json:"created"`
+	LastUsed  time.Time `bson:"lastUsed" json:"lastUsed"`
+	ExpiresAt time.Time `bson:"expiresAt" json:"expiresAt"`
+}
+
 type User struct {
 	Username string `bson:"username" json:"username"`
 	Password string `bson:"password" json:"password"`
 	Salt     string `bson:"salt" json:"salt"`
+	APIKey   APIKey `bson:"apiKey" json:"apiKey"`
 }
 
 type UserListItem struct {
@@ -13,37 +33,48 @@ type UserListItem struct {
 }
 
 type ValidateUsernameRequest struct {
-	Username string `bson:"username" json:"username"`
+	Username string `json:"username"`
 }
 
 type ValidateUsernameResponse struct {
-	UsernameAvailable bool `bson:"usernameAvailable" json:"usernameAvailable"`
+	UsernameAvailable bool `json:"usernameAvailable"`
 }
 
 type CreateUserRequest struct {
-	Username string `bson:"username" json:"username"`
-	Password string `bson:"password" json:"password"`
+	Username      string `json:"username"`
+	Password      string `json:"password"`
+	SessionOption string `json:"sessionOption"`
 }
 
 type CreateUserResponse struct {
-	Success bool `bson:"success" json:"success"`
+	Success bool   `json:"success"`
+	Token   string `json:"token,omitempty"`
+	APIKey  string `json:"apiKey,omitempty"`
 }
 
-type ListUsersRequest struct{}
+type UpdateUserRequest struct {
+	Username      string `json:"username"`
+	SessionOption string `json:"sessionOption"`
+}
 
-type ListUsersResponse struct{}
-
-type GetUserRequest struct{}
-
-type GetUserResponse struct{}
+type UpdateUserResponse struct {
+	Success bool   `json:"success"`
+	Token   string `json:"token,omitempty"`
+	APIKey  string `json:"apiKey,omitempty"`
+}
 
 type LoginRequest struct {
-	Username string `bson:"username" json:"username"`
-	Password string `bson:"password" json:"password"`
+	Username          string `json:"username"`
+	Password          string `json:"password"`
+	SessionOption     string `json:"sessionOption"`
+	RespondWithAPIKey bool   `json:"respondWithApiKey,omitempty"`
+	Key               string `json:"key,omitempty"`
 }
 
 type LoginResponse struct {
-	Success bool `bson:"success" json:"success"`
+	Success bool   `json:"success"`
+	Token   string `json:"token,omitempty"`
+	APIKey  string `json:"apiKey,omitempty"`
 }
 
 type LocationData struct {

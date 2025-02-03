@@ -24,8 +24,14 @@ func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if !utils.IsValidSessionOption(req.SessionOption) {
+		http.Error(w, "Invalid session option", http.StatusBadRequest)
+		return
+	}
+
 	fmt.Println("Username: ", req.Username)
 	fmt.Println("Password: ", req.Password)
+	fmt.Println("SessionOption: ", req.SessionOption)
 
 	response, err := createUser(req)
 	if err != nil {
@@ -56,10 +62,27 @@ func createUser(req types.CreateUserRequest) (types.CreateUserResponse, error) {
 	}
 	fmt.Println("Hashed password:", hashedPassword)
 
+	apiKey, err := utils.GenerateSecureAPIKey()
+	if err != nil {
+		fmt.Println("Error generating secure API key: ", err)
+		return types.CreateUserResponse{
+			Success: false,
+		}, err
+	}
+
+	token, err := utils.GenerateAndStoreJWT(req.Username, req.SessionOption)
+	if err != nil {
+		fmt.Println("Error generating JWT: ", err)
+		return types.CreateUserResponse{
+			Success: false,
+		}, err
+	}
+
 	newUser := types.User{
 		Username: req.Username,
 		Password: hashedPassword,
 		Salt:     salt,
+		APIKey:   *apiKey,
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -67,16 +90,17 @@ func createUser(req types.CreateUserRequest) (types.CreateUserResponse, error) {
 
 	collection := db.MongoClient.Database(db.DbName).Collection(db.UserCollection)
 
-	result, err := collection.InsertOne(ctx, newUser)
+	_, err = collection.InsertOne(ctx, newUser)
 	if err != nil {
 		fmt.Println("Error inserting new user into the database:", err)
 		return types.CreateUserResponse{
 			Success: false,
 		}, err
 	}
-	fmt.Println("Result:", result)
 
 	return types.CreateUserResponse{
 		Success: true,
+		Token:   token,
+		APIKey:  apiKey.Key,
 	}, nil
 }

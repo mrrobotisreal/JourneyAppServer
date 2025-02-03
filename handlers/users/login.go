@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -25,7 +26,12 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println("Incoming login request:", req.Username)
+	if !utils.IsValidSessionOption(req.SessionOption) {
+		http.Error(w, "Invalid session option", http.StatusBadRequest)
+		return
+	}
+
+	fmt.Println("Incoming login request:", req.Username) // TODO: start maintaining logs of login requests when failed
 
 	response, err := login(req)
 	if err != nil {
@@ -38,7 +44,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func login(req types.LoginRequest) (types.LoginResponse, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	collection := db.MongoClient.Database(db.DbName).Collection(db.UserCollection)
@@ -53,8 +59,57 @@ func login(req types.LoginRequest) (types.LoginResponse, error) {
 	}
 
 	isPasswordValid := utils.CheckPasswordHash(req.Password+userResult.Salt, userResult.Password)
+	if !isPasswordValid {
+		fmt.Println("INVALID PASSWORD ATTEMPTED!") // TODO: add logs for this
+		return types.LoginResponse{
+			Success: false,
+		}, nil
+	}
+
+	token, err := utils.GenerateAndStoreJWT(req.Username, req.SessionOption)
+	if err != nil {
+		fmt.Println("Error generating token: ", err)
+		return types.LoginResponse{
+			Success: false,
+		}, err
+	}
+
+	shouldRespondWithAPIKey := false
+	APIKey := ""
+
+	if utils.IsKeyRotationNeeded(&userResult.APIKey) {
+		newAPIKey, err := utils.GenerateSecureAPIKey()
+		if err != nil {
+			fmt.Println("Error rotating the API key: ", err)
+		} else {
+			_, err = collection.UpdateOne(ctx, bson.M{"username": req.Username}, bson.M{"$set": bson.M{"apiKey": newAPIKey}})
+			if err != nil {
+				fmt.Println("Error updating rotated API key: ", err)
+			} else {
+				APIKey = newAPIKey.Key
+				shouldRespondWithAPIKey = true
+			}
+		}
+	}
+
+	if shouldRespondWithAPIKey {
+		return types.LoginResponse{
+			Success: true,
+			Token:   token,
+			APIKey:  APIKey,
+		}, nil
+	} else if req.RespondWithAPIKey {
+		if req.Key == os.Getenv("RESPOND_WITH_API_KEY_KEY") {
+			return types.LoginResponse{
+				Success: true,
+				Token:   token,
+				APIKey:  userResult.APIKey.Key,
+			}, nil
+		}
+	}
 
 	return types.LoginResponse{
-		Success: isPasswordValid,
+		Success: true,
+		Token:   token,
 	}, nil
 }
