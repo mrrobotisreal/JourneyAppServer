@@ -60,7 +60,7 @@ func updateUser(req types.UpdateUserRequest) (types.UpdateUserResponse, error) {
 		}, err
 	}
 
-	_, err = collection.UpdateOne(ctx, bson.M{"username": req.Username}, update)
+	_, err = collection.UpdateOne(ctx, bson.M{"username": req.Username}, bson.M{"$set": update})
 	if err != nil {
 		fmt.Println("Error attempting to update user: ", err)
 		return types.UpdateUserResponse{
