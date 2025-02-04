@@ -41,15 +41,15 @@ func main() {
 	//http.HandleFunc("/api/users/update", userHandlers.UpdateUserHandler)
 
 	// Entries
-	http.HandleFunc("/api/entries/list", entriesHandlers.ListEntriesHandler)
-	http.HandleFunc("/api/entries/create", entriesHandlers.CreateNewEntryHandler)
-	http.HandleFunc("/api/entries/update", entriesHandlers.UpdateEntryHandler)
-	http.HandleFunc("/api/entries/getPresignedURL", aws.PresignHandler)
+	http.HandleFunc("/api/entries/list", entriesHandlers.ListEntriesHandler) // no middleware here, it's being deprecated
+	http.HandleFunc("/api/entries/create", middleware.CombinedAuthMiddleware(entriesHandlers.CreateNewEntryHandler))
+	http.HandleFunc("/api/entries/update", middleware.CombinedAuthMiddleware(entriesHandlers.UpdateEntryHandler))
+	http.HandleFunc("/api/entries/getPresignedURL", middleware.CombinedAuthMiddleware(aws.PresignHandler))
 	http.HandleFunc("/api/entries/getImageURL", middleware.CombinedAuthMiddleware(aws.GetPresignedHandler))
 	http.HandleFunc("/api/entries/delete", entriesHandlers.DeleteEntryHandler)
-	http.HandleFunc("/api/entries/search", entriesHandlers.SearchEntriesHandler)
-	http.HandleFunc("/api/entries/listUniqueLocations", entriesHandlers.ListUniqueLocationsHandler)
-	http.HandleFunc("/api/entries/listUniqueTags", entriesHandlers.ListUniqueTagsHandler)
+	http.HandleFunc("/api/entries/search", middleware.CombinedAuthMiddleware(entriesHandlers.SearchEntriesHandler))
+	http.HandleFunc("/api/entries/listUniqueLocations", middleware.CombinedAuthMiddleware(entriesHandlers.ListUniqueLocationsHandler))
+	http.HandleFunc("/api/entries/listUniqueTags", middleware.CombinedAuthMiddleware(entriesHandlers.ListUniqueTagsHandler))
 	//http.HandleFunc("/fix", entriesHandlers.FixTimestampHandler)
 
 	certFile := "/etc/letsencrypt/live/journeyapp.me/fullchain.pem"

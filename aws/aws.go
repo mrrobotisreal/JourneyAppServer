@@ -83,7 +83,6 @@ func GetPresignedHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	key := r.URL.Query().Get("key")
-	fmt.Println("Key:", key)
 	if key == "" {
 		http.Error(w, "Missing required param \"key\"", http.StatusBadRequest)
 		return
@@ -94,7 +93,6 @@ func GetPresignedHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error generating pre-signed GET URL", http.StatusInternalServerError)
 		return
 	}
-	fmt.Println("Url:", url)
 
 	w.Header().Set("Content-Type", "application/json")
 	fmt.Fprintf(w, `{"url": %q}`, url)
