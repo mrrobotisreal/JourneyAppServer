@@ -4,9 +4,10 @@ import (
 	"JourneyAppServer/db"
 	"context"
 	"fmt"
-	"go.mongodb.org/mongo-driver/bson"
 	"net/http"
 	"time"
+
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 func DeleteEntryHandler(w http.ResponseWriter, r *http.Request) {
@@ -20,8 +21,13 @@ func DeleteEntryHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Missing required param \"id\".", http.StatusBadRequest)
 		return
 	}
+	user := r.URL.Query().Get("user")
+	if user == "" {
+		http.Error(w, "Missing required param \"user\".", http.StatusBadRequest)
+		return
+	}
 
-	success, err := deleteEntry(id)
+	success, err := deleteEntry(id, user)
 	if err != nil {
 		http.Error(w, "Error deleting the entry", http.StatusInternalServerError)
 		return
@@ -31,13 +37,13 @@ func DeleteEntryHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, `{"success": %v}`, success)
 }
 
-func deleteEntry(id string) (bool, error) {
+func deleteEntry(id, user string) (bool, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	collection := db.MongoClient.Database(db.DbName).Collection(db.EntriesCollection)
 
-	result, err := collection.DeleteOne(ctx, bson.M{"id": id})
+	result, err := collection.DeleteOne(ctx, bson.M{"id": id, "username": user})
 	if err != nil {
 		fmt.Println("Error deleting the entry from the database:", err)
 		return false, err
