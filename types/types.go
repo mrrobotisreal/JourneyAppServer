@@ -63,6 +63,10 @@ type UpdateUserResponse struct {
 	APIKey  string `json:"apiKey,omitempty"`
 }
 
+type DeleteAccountResponse struct {
+	Success bool `json:"success"`
+}
+
 type LoginRequest struct {
 	Username          string `json:"username"`
 	Password          string `json:"password"`
