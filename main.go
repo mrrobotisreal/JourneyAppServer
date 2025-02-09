@@ -37,7 +37,8 @@ func main() {
 	http.HandleFunc("/api/users/create", userHandlers.CreateUserHandler)
 	http.HandleFunc("/api/users/login", userHandlers.LoginHandler)
 	http.HandleFunc("/api/users/list", userHandlers.ListUsersHandler)
-	http.HandleFunc("/api/users/get", middleware.CombinedAuthMiddleware(userHandlers.GetUserHandler))
+	http.HandleFunc("/api/users/get", userHandlers.GetUserHandler)
+	// http.HandleFunc("/api/users/get", middleware.CombinedAuthMiddleware(userHandlers.GetUserHandler))
 	//http.HandleFunc("/api/users/update", userHandlers.UpdateUserHandler)
 	http.HandleFunc("/api/users/delete", middleware.CombinedAuthMiddleware(userHandlers.DeleteAccountHandler))
 
