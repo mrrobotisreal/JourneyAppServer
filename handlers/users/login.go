@@ -110,8 +110,11 @@ func login(req types.LoginRequest) (types.LoginResponse, error) {
 	//}
 
 	return types.LoginResponse{
-		Success: true,
-		Token:   token,
-		APIKey:  APIKey,
+		UserID:   userResult.UserID,
+		Username: userResult.Username,
+		Success:  true,
+		Token:    token,
+		APIKey:   APIKey,
+		Font:     userResult.Font,
 	}, nil
 }

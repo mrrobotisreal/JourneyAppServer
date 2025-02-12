@@ -83,9 +83,12 @@ type LoginRequest struct {
 }
 
 type LoginResponse struct {
-	Success bool   `json:"success"`
-	Token   string `json:"token,omitempty"`
-	APIKey  string `json:"apiKey,omitempty"`
+	UserID   string `json:"userId,omitempty"`
+	Username string `json:"username,omitempty"`
+	Success  bool   `json:"success"`
+	Token    string `json:"token,omitempty"`
+	APIKey   string `json:"apiKey,omitempty"`
+	Font     string `json:"font,omitempty"`
 }
 
 type LocationData struct {
