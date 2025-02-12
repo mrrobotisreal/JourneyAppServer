@@ -7,6 +7,7 @@ import (
 	userHandlers "JourneyAppServer/handlers/users"
 	"JourneyAppServer/middleware"
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -24,6 +25,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("Successfully connected to MongoDB")
 
 	defer func() {
 		if err := db.MongoClient.Disconnect(ctx); err != nil {
@@ -52,6 +54,8 @@ func main() {
 	http.HandleFunc("/api/entries/listUniqueLocations", middleware.CombinedAuthMiddleware(entriesHandlers.ListUniqueLocationsHandler))
 	http.HandleFunc("/api/entries/listUniqueTags", middleware.CombinedAuthMiddleware(entriesHandlers.ListUniqueTagsHandler))
 	//http.HandleFunc("/fix", entriesHandlers.FixTimestampHandler)
+
+	fmt.Println("Server running on port 6913...")
 
 	if err := http.ListenAndServe(":6913", nil); err != nil {
 		log.Fatalf("Failed to start server on port 6913: %v", err)
