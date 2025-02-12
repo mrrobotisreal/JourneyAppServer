@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/google/uuid"
 	"net/http"
 	"time"
 )
@@ -78,11 +79,14 @@ func createUser(req types.CreateUserRequest) (types.CreateUserResponse, error) {
 		}, err
 	}
 
+	userId := uuid.New().String()
 	newUser := types.User{
+		UserID:   userId,
 		Username: req.Username,
 		Password: hashedPassword,
 		Salt:     salt,
 		APIKey:   *apiKey,
+		Font:     "Default",
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -99,8 +103,11 @@ func createUser(req types.CreateUserRequest) (types.CreateUserResponse, error) {
 	}
 
 	return types.CreateUserResponse{
-		Success: true,
-		Token:   token,
-		APIKey:  apiKey.Key,
+		UserID:   userId,
+		Username: req.Username,
+		Success:  true,
+		Token:    token,
+		APIKey:   apiKey.Key,
+		Font:     "Default",
 	}, nil
 }

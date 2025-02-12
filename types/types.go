@@ -22,13 +22,16 @@ type APIKey struct {
 }
 
 type User struct {
+	UserID   string `bson:"userId" json:"userId"`
 	Username string `bson:"username" json:"username"`
 	Password string `bson:"password" json:"password"`
 	Salt     string `bson:"salt" json:"salt"`
 	APIKey   APIKey `bson:"apiKey" json:"apiKey"`
+	Font     string `bson:"font" json:"font"`
 }
 
 type UserListItem struct {
+	UserID   string `bson:"userId" json:"userId"`
 	Username string `bson:"username" json:"username"`
 }
 
@@ -47,12 +50,16 @@ type CreateUserRequest struct {
 }
 
 type CreateUserResponse struct {
-	Success bool   `json:"success"`
-	Token   string `json:"token,omitempty"`
-	APIKey  string `json:"apiKey,omitempty"`
+	UserID   string `json:"userId"`
+	Username string `json:"username"`
+	Success  bool   `json:"success"`
+	Token    string `json:"token,omitempty"`
+	APIKey   string `json:"apiKey,omitempty"`
+	Font     string `json:"font"`
 }
 
 type UpdateUserRequest struct {
+	UserID        string `json:"userId"`
 	Username      string `json:"username"`
 	SessionOption string `json:"sessionOption"`
 }
@@ -93,6 +100,7 @@ type TagData struct {
 }
 
 type CreateNewEntryRequest struct {
+	UserID    string         `json:"userId"`
 	Username  string         `bson:"username" json:"username"`
 	Text      string         `bson:"text" json:"text"`
 	Timestamp time.Time      `bson:"timestamp" json:"timestamp"`
@@ -107,6 +115,7 @@ type CreateNewEntryResponse struct {
 
 type UpdateEntryRequest struct {
 	ID        string         `bson:"id" json:"id"`
+	UserID    string         `json:"userId"`
 	Username  string         `bson:"username" json:"username"`
 	Text      string         `bson:"text" json:"text"`
 	Timestamp time.Time      `bson:"timestamp" json:"timestamp"`
@@ -120,13 +129,15 @@ type UpdateEntryResponse struct {
 }
 
 type Entry struct {
-	ID        string         `bson:"id" json:"id"`
-	Username  string         `bson:"username" json:"username"`
-	Text      string         `bson:"text" json:"text"`
-	Timestamp time.Time      `bson:"timestamp" json:"timestamp"`
-	Locations []LocationData `bson:"locations" json:"locations"`
-	Tags      []TagData      `bson:"tags" json:"tags"`
-	Images    []string       `bson:"images" json:"images"`
+	ID          string         `bson:"id" json:"id"`
+	UserID      string         `bson:"userId" json:"userId"`
+	Username    string         `bson:"username" json:"username"`
+	Text        string         `bson:"text" json:"text"`
+	Timestamp   time.Time      `bson:"timestamp" json:"timestamp"`
+	LastUpdated time.Time      `bson:"lastUpdated" json:"lastUpdated"`
+	Locations   []LocationData `bson:"locations" json:"locations"`
+	Tags        []TagData      `bson:"tags" json:"tags"`
+	Images      []string       `bson:"images" json:"images"`
 }
 
 type EntryListItem struct {
