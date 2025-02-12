@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"net/http"
-	"os"
 	"time"
 )
 
@@ -74,7 +73,7 @@ func login(req types.LoginRequest) (types.LoginResponse, error) {
 		}, err
 	}
 
-	shouldRespondWithAPIKey := false
+	//shouldRespondWithAPIKey := false
 	APIKey := ""
 
 	if utils.IsKeyRotationNeeded(&userResult.APIKey) {
@@ -87,29 +86,32 @@ func login(req types.LoginRequest) (types.LoginResponse, error) {
 				fmt.Println("Error updating rotated API key: ", err)
 			} else {
 				APIKey = newAPIKey.Key
-				shouldRespondWithAPIKey = true
+				//shouldRespondWithAPIKey = true
 			}
 		}
+	} else {
+		APIKey = userResult.APIKey.Key
 	}
 
-	if shouldRespondWithAPIKey {
-		return types.LoginResponse{
-			Success: true,
-			Token:   token,
-			APIKey:  APIKey,
-		}, nil
-	} else if req.RespondWithAPIKey {
-		if req.Key == os.Getenv("RESPOND_WITH_API_KEY_KEY") {
-			return types.LoginResponse{
-				Success: true,
-				Token:   token,
-				APIKey:  userResult.APIKey.Key,
-			}, nil
-		}
-	}
+	//if shouldRespondWithAPIKey {
+	//	return types.LoginResponse{
+	//		Success: true,
+	//		Token:   token,
+	//		APIKey:  APIKey,
+	//	}, nil
+	//} else if req.RespondWithAPIKey {
+	//	if req.Key == os.Getenv("RESPOND_WITH_API_KEY_KEY") {
+	//		return types.LoginResponse{
+	//			Success: true,
+	//			Token:   token,
+	//			APIKey:  userResult.APIKey.Key,
+	//		}, nil
+	//	}
+	//}
 
 	return types.LoginResponse{
 		Success: true,
 		Token:   token,
+		APIKey:  APIKey,
 	}, nil
 }
