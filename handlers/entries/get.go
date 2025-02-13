@@ -19,7 +19,7 @@ func GetEntryHandler(w http.ResponseWriter, r *http.Request) {
 
 	id := r.URL.Query().Get("id")
 	userId := r.URL.Query().Get("userId")
-	timestamp := r.URL.Query().Get("timestamp")
+	timestampStr := r.URL.Query().Get("timestamp")
 	if id == "" {
 		http.Error(w, "Missing required param \"id\"", http.StatusBadRequest)
 		return
@@ -28,8 +28,13 @@ func GetEntryHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Missing required param \"userId\"", http.StatusBadRequest)
 		return
 	}
-	if timestamp == "" {
+	if timestampStr == "" {
 		http.Error(w, "Missing required param \"timestamp\"", http.StatusBadRequest)
+		return
+	}
+	timestamp, err := time.Parse(time.RFC3339, timestampStr)
+	if err != nil {
+		http.Error(w, "Invalid timestamp format", http.StatusBadRequest)
 		return
 	}
 
@@ -43,7 +48,7 @@ func GetEntryHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
-func getEntry(id, userId, timestamp string) (types.Entry, error) {
+func getEntry(id, userId string, timestamp time.Time) (types.Entry, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
