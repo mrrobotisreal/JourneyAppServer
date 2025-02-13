@@ -23,10 +23,10 @@ func UpdateEntryHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	if req.UserID == "" {
-		http.Error(w, "Missing required body property \"userId\"", http.StatusBadRequest)
-		return
-	}
+	//if req.UserID == "" {
+	//	http.Error(w, "Missing required body property \"userId\"", http.StatusBadRequest)
+	//	return
+	//}
 	if req.Timestamp.IsZero() {
 		http.Error(w, "Missing required body property \"timestamp\"", http.StatusBadRequest)
 		return
@@ -47,10 +47,6 @@ func updateEntry(req types.UpdateEntryRequest) (types.UpdateEntryResponse, error
 	defer cancel()
 
 	update := bson.M{}
-
-	if req.UserID != "" {
-		update["userId"] = req.UserID // TODO: remove immediately!
-	}
 
 	if req.Text != "" {
 		update["text"] = req.Text
