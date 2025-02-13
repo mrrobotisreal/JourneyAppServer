@@ -117,14 +117,15 @@ type CreateNewEntryResponse struct {
 }
 
 type UpdateEntryRequest struct {
-	ID        string         `bson:"id" json:"id"`
-	UserID    string         `json:"userId"`
-	Username  string         `bson:"username" json:"username"`
-	Text      string         `bson:"text" json:"text"`
-	Timestamp time.Time      `bson:"timestamp" json:"timestamp"`
-	Locations []LocationData `bson:"locations" json:"locations"`
-	Tags      []TagData      `bson:"tags" json:"tags"`
-	Images    []string       `bson:"images" json:"images"`
+	ID          string         `bson:"id" json:"id"`
+	UserID      string         `json:"userId"`
+	Username    string         `bson:"username" json:"username"`
+	Text        string         `bson:"text" json:"text"`
+	Timestamp   time.Time      `bson:"timestamp" json:"timestamp"`
+	LastUpdated time.Time      `bson:"lastUpdated" json:"lastUpdated"`
+	Locations   []LocationData `bson:"locations" json:"locations"`
+	Tags        []TagData      `bson:"tags" json:"tags"`
+	Images      []string       `bson:"images" json:"images"`
 }
 
 type UpdateEntryResponse struct {

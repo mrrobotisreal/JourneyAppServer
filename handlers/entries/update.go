@@ -23,6 +23,14 @@ func UpdateEntryHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
+	if req.UserID == "" {
+		http.Error(w, "Missing required body property \"userId\"", http.StatusBadRequest)
+		return
+	}
+	if req.Timestamp.IsZero() {
+		http.Error(w, "Missing required body property \"timestamp\"", http.StatusBadRequest)
+		return
+	}
 
 	response, err := updateEntry(req)
 	if err != nil {
@@ -60,10 +68,14 @@ func updateEntry(req types.UpdateEntryRequest) (types.UpdateEntryResponse, error
 		update["images"] = req.Images
 	}
 
+	if req.LastUpdated.IsZero() {
+		update["lastUpdated"] = time.Now().UTC()
+	}
+
 	collection := db.MongoClient.Database(db.DbName).Collection(db.EntriesCollection)
 
 	var entry types.Entry
-	err := collection.FindOneAndUpdate(ctx, bson.M{"id": req.ID}, bson.M{"$set": update}).Decode(&entry)
+	err := collection.FindOneAndUpdate(ctx, bson.M{"id": req.ID, "timestamp": req.Timestamp}, bson.M{"$set": update}).Decode(&entry)
 	if err != nil {
 		fmt.Println("Error finding and updating the entry in the database:", err)
 		return types.UpdateEntryResponse{
