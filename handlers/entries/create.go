@@ -47,6 +47,7 @@ func CreateNewEntryHandler(w http.ResponseWriter, r *http.Request) {
 func createNewEntry(req types.CreateNewEntryRequest) (types.CreateNewEntryResponse, error) {
 	newEntry := types.Entry{
 		ID:        uuid.New().String(),
+		UserID:    req.UserID,
 		Username:  req.Username,
 		Text:      req.Text,
 		Timestamp: req.Timestamp,

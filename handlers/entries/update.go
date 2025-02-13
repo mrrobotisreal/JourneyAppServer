@@ -40,6 +40,10 @@ func updateEntry(req types.UpdateEntryRequest) (types.UpdateEntryResponse, error
 
 	update := bson.M{}
 
+	if req.UserID != "" {
+		update["userId"] = req.UserID // TODO: remove immediately!
+	}
+
 	if req.Text != "" {
 		update["text"] = req.Text
 	}
