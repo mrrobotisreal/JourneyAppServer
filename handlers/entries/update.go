@@ -71,7 +71,7 @@ func updateEntry(req types.UpdateEntryRequest) (types.UpdateEntryResponse, error
 	collection := db.MongoClient.Database(db.DbName).Collection(db.EntriesCollection)
 
 	var entry types.Entry
-	err := collection.FindOneAndUpdate(ctx, bson.M{"id": req.ID, "timestamp": req.Timestamp}, bson.M{"$set": update}).Decode(&entry)
+	err := collection.FindOneAndUpdate(ctx, bson.M{"id": req.ID, "userId": req.UserID, "timestamp": req.Timestamp}, bson.M{"$set": update}).Decode(&entry)
 	if err != nil {
 		fmt.Println("Error finding and updating the entry in the database:", err)
 		return types.UpdateEntryResponse{
