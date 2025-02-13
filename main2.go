@@ -47,8 +47,8 @@ func main() {
 	http.HandleFunc("/api/entries/list", entriesHandlers.ListEntriesHandler) // no middleware here, it's being deprecated
 	http.HandleFunc("/api/entries/create", middleware.CombinedAuthMiddleware(entriesHandlers.CreateNewEntryHandler))
 	http.HandleFunc("/api/entries/update", middleware.CombinedAuthMiddleware(entriesHandlers.UpdateEntryHandler))
-	http.HandleFunc("/api/entries/getPresignedURL", middleware.CombinedAuthMiddleware(aws.PresignHandler))
-	http.HandleFunc("/api/entries/getImageURL", middleware.CombinedAuthMiddleware(aws.GetPresignedHandler))
+	http.HandleFunc("/api/entries/getPresignedPutURL", middleware.CombinedAuthMiddleware(aws.PresignPutHandler))
+	http.HandleFunc("/api/entries/getPresignedGetURL", middleware.CombinedAuthMiddleware(aws.PresignGetHandler))
 	http.HandleFunc("/api/entries/delete", entriesHandlers.DeleteEntryHandler)
 	http.HandleFunc("/api/entries/search", middleware.CombinedAuthMiddleware(entriesHandlers.SearchEntriesHandler))
 	http.HandleFunc("/api/entries/listUniqueLocations", middleware.CombinedAuthMiddleware(entriesHandlers.ListUniqueLocationsHandler))

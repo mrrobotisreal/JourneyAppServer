@@ -23,7 +23,7 @@ func init() {
 	fmt.Println("Successfully created new s3Client from config...")
 }
 
-func GeneratePresignedURL(bucket, key string) (string, error) {
+func GeneratePresignedUploadURL(bucket, key string) (string, error) {
 	fmt.Println("Generating a new presigned url...")
 	presignClient := s3.NewPresignClient(s3Client)
 	fmt.Println("Successfully created new presignClient")
@@ -39,20 +39,20 @@ func GeneratePresignedURL(bucket, key string) (string, error) {
 	return req.URL, nil
 }
 
-func PresignHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Handling request for PresignHandler...")
-	username := r.URL.Query().Get("username")
-	uuid := r.URL.Query().Get("uuid")
+func PresignPutHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Handling request for PresignPutHandler...")
+	username := r.URL.Query().Get("user")
+	entryId := r.URL.Query().Get("entryId")
 	filename := r.URL.Query().Get("filename")
 
-	if username == "" || uuid == "" || filename == "" {
+	if username == "" || entryId == "" || filename == "" {
 		http.Error(w, "Missing query params", http.StatusBadRequest)
 		return
 	}
 
-	key := fmt.Sprintf("%s/%s/%s/%s", "images", username, uuid, filename)
+	key := fmt.Sprintf("%s/%s/%s/%s", "images", username, entryId, filename)
 	fmt.Println("Key:", key)
-	url, err := GeneratePresignedURL("winapps-myjourney", key)
+	url, err := GeneratePresignedUploadURL("winapps-myjourney", key)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -76,7 +76,7 @@ func generatePresignedGetURL(key string) (string, error) {
 	return req.URL, nil
 }
 
-func GetPresignedHandler(w http.ResponseWriter, r *http.Request) {
+func PresignGetHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
