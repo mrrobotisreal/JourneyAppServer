@@ -6,9 +6,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/google/uuid"
 	"net/http"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 func CreateNewEntryHandler(w http.ResponseWriter, r *http.Request) {
@@ -68,6 +69,13 @@ func createNewEntry(req types.CreateNewEntryRequest) (types.CreateNewEntryRespon
 	fmt.Println("Result:", result)
 
 	return types.CreateNewEntryResponse{
-		UUID: newEntry.ID,
+		ID: newEntry.ID,
+		UserID:    req.UserID,
+		Username:  req.Username,
+		Text:      req.Text,
+		Timestamp: req.Timestamp,
+		LastUpdated: req.Timestamp,
+		Locations: req.Locations,
+		Tags:      req.Tags,
 	}, nil
 }
