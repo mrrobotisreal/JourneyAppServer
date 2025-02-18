@@ -6,9 +6,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"go.mongodb.org/mongo-driver/bson"
 	"net/http"
 	"time"
+
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 func AddLocationHandler(w http.ResponseWriter, r *http.Request) {
@@ -48,7 +49,7 @@ func addLocation(req types.AddLocationRequest) (types.AddLocationResponse, error
 			Success: false,
 		}, err
 	}
-	fmt.Println("Delete location result is:", entry)
+	fmt.Println("Add location result is:", entry)
 
 	return types.AddLocationResponse{
 		Success: true,

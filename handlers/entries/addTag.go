@@ -6,9 +6,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"go.mongodb.org/mongo-driver/bson"
 	"net/http"
 	"time"
+
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 func AddTagHandler(w http.ResponseWriter, r *http.Request) {
@@ -48,7 +49,7 @@ func addTag(req types.AddTagRequest) (types.AddTagResponse, error) {
 			Success: false,
 		}, err
 	}
-	fmt.Println("Delete tag result is:", entry)
+	fmt.Println("Add tag result is:", entry)
 
 	return types.AddTagResponse{
 		Success: true,
