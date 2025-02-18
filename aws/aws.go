@@ -1,13 +1,16 @@
 package aws
 
 import (
+	"JourneyAppServer/types"
 	"context"
 	"fmt"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"net/http"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	s3types "github.com/aws/aws-sdk-go-v2/service/s3/types"
 )
 
 var s3Client *s3.Client
@@ -96,4 +99,70 @@ func PresignGetHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	fmt.Fprintf(w, `{"url": %q}`, url)
+}
+
+func DeleteImage(prefix string) types.DeleteImageResponse {
+	_, err := s3Client.DeleteObject(context.TODO(), &s3.DeleteObjectInput{
+		Bucket: aws.String("winapps-myjourney"),
+		Key:    aws.String(prefix),
+	})
+	if err != nil {
+		fmt.Println("Error deleting the object!")
+		return types.DeleteImageResponse{
+			Success: false,
+		}
+	}
+
+	return types.DeleteImageResponse{
+		Success: true,
+	}
+}
+
+func BulkDeleteImages(username, entryId string) types.DeleteImageResponse {
+	prefix := fmt.Sprintf("images/%s/%s/", username, entryId)
+
+	objects, err := listEntryObjects(context.TODO(), "winapps-myjourney", prefix)
+	if err != nil {
+		fmt.Println("Error listing images for entry", entryId)
+		return types.DeleteImageResponse{
+			Success: false,
+		}
+	}
+
+	for _, object := range objects {
+		fmt.Printf("Deleting object: %s\n", *object.Key)
+		_, err := s3Client.DeleteObject(context.TODO(), &s3.DeleteObjectInput{
+			Bucket: aws.String("winapps-myjourney"),
+			Key:    object.Key,
+		})
+		if err != nil {
+			fmt.Println("Error deleting the object!")
+			return types.DeleteImageResponse{
+				Success: false,
+			}
+		}
+	}
+
+	return types.DeleteImageResponse{
+		Success: true,
+	}
+}
+
+func listEntryObjects(ctx context.Context, bucket, prefix string) ([]s3types.Object, error) {
+	var objects []s3types.Object
+
+	paginator := s3.NewListObjectsV2Paginator(s3Client, &s3.ListObjectsV2Input{
+		Bucket: aws.String(bucket),
+		Prefix: aws.String(prefix),
+	})
+
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return nil, err
+		}
+		objects = append(objects, page.Contents...)
+	}
+
+	return objects, nil
 }

@@ -113,7 +113,7 @@ type CreateNewEntryRequest struct {
 }
 
 type CreateNewEntryResponse struct {
-	ID string `bson:"id" json:"id"`
+	ID          string         `bson:"id" json:"id"`
 	UserID      string         `json:"userId"`
 	Username    string         `bson:"username" json:"username"`
 	Text        string         `bson:"text" json:"text"`
@@ -188,3 +188,76 @@ type SearchEntriesRequest struct {
 }
 
 type SearchEntriesResponse struct{} // May not need this. TODO: remove if not needed
+
+type AddTagRequest struct {
+	Username  string    `json:"username"`
+	UserID    string    `json:"userId"`
+	Timestamp time.Time `json:"timestamp"`
+	EntryID   string    `json:"entryId"`
+	Tags      []TagData `json:"tags"`
+}
+
+type AddTagResponse struct {
+	Success bool `json:"success"`
+}
+
+type DeleteTagRequest struct {
+	Username  string    `json:"username"`
+	UserID    string    `json:"userId"`
+	Timestamp time.Time `json:"timestamp"`
+	EntryID   string    `json:"entryId"`
+	Tags      []TagData `json:"tags"`
+}
+
+type DeleteTagResponse struct {
+	Success bool `json:"success"`
+}
+
+type AddLocationRequest struct {
+	Username  string         `json:"username"`
+	UserID    string         `json:"userId"`
+	Timestamp time.Time      `json:"timestamp"`
+	EntryID   string         `json:"entryId"`
+	Locations []LocationData `json:"locations"`
+}
+
+type AddLocationResponse struct {
+	Success bool `json:"success"`
+}
+
+type DeleteLocationRequest struct {
+	Username  string         `json:"username"`
+	UserID    string         `json:"userId"`
+	Timestamp time.Time      `json:"timestamp"`
+	EntryID   string         `json:"entryId"`
+	Locations []LocationData `json:"locations"`
+}
+
+type DeleteLocationResponse struct {
+	Success bool `json:"success"`
+}
+
+type AddImageRequest struct {
+	Username  string    `json:"username"`
+	UserID    string    `json:"userId"`
+	Timestamp time.Time `json:"timestamp"`
+	EntryID   string    `json:"entryId"`
+	Images    []string  `json:"images"`
+}
+
+type AddImageResponse struct {
+	Success bool `json:"success"`
+}
+
+type DeleteImageRequest struct {
+	Username      string    `json:"username"`
+	UserID        string    `json:"userId"`
+	Timestamp     time.Time `json:"timestamp"`
+	EntryID       string    `json:"entryId"`
+	Images        []string  `json:"images"`
+	ImageToDelete string    `json:"imageToDelete"`
+}
+
+type DeleteImageResponse struct {
+	Success bool `json:"success"`
+}

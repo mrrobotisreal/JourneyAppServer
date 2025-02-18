@@ -45,6 +45,12 @@ func DeleteEntryHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func deleteEntry(id, userId string, timestamp time.Time) (bool, error) {
+	//var deleteImagesFromAWSResult = aws.BulkDeleteImages()
+	//if !deleteImagesFromAWSResult.Success {
+	//	fmt.Println("Error deleting the image from AWS")
+	//	return false, nil
+	//}
+
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 

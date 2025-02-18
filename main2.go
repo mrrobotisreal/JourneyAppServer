@@ -54,6 +54,12 @@ func main() {
 	http.HandleFunc("/api/entries/search", middleware.CombinedAuthMiddleware(entriesHandlers.SearchEntriesHandler))
 	http.HandleFunc("/api/entries/listUniqueLocations", middleware.CombinedAuthMiddleware(entriesHandlers.ListUniqueLocationsHandler))
 	http.HandleFunc("/api/entries/listUniqueTags", middleware.CombinedAuthMiddleware(entriesHandlers.ListUniqueTagsHandler))
+	http.HandleFunc("/api/entries/deleteTag", middleware.CombinedAuthMiddleware(entriesHandlers.DeleteTagHandler))
+	http.HandleFunc("/api/entries/deleteLocation", middleware.CombinedAuthMiddleware(entriesHandlers.DeleteLocationHandler))
+	http.HandleFunc("/api/entries/deleteImage", middleware.CombinedAuthMiddleware(entriesHandlers.DeleteImageHandler))
+	http.HandleFunc("/api/entries/addImage", middleware.CombinedAuthMiddleware(entriesHandlers.AddImageHandler))
+	http.HandleFunc("/api/entries/addLocation", middleware.CombinedAuthMiddleware(entriesHandlers.AddLocationHandler))
+	http.HandleFunc("/api/entries/addTag", middleware.CombinedAuthMiddleware(entriesHandlers.AddTagHandler))
 	//http.HandleFunc("/fix", entriesHandlers.FixTimestampHandler)
 
 	fmt.Println("Server running on port 6913...")
