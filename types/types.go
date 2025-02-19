@@ -62,6 +62,8 @@ type UpdateUserRequest struct {
 	UserID        string `json:"userId"`
 	Username      string `json:"username"`
 	SessionOption string `json:"sessionOption"`
+	Password      string `json:"password"`
+	Salt          string `json:"salt"`
 }
 
 type UpdateUserResponse struct {

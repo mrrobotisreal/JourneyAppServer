@@ -41,17 +41,37 @@ func updateUser(req types.UpdateUserRequest) (types.UpdateUserResponse, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	collection := db.MongoClient.Database(db.DbName).Collection(db.UserCollection)
-
-	apiKey, err := utils.GenerateSecureAPIKey()
+	salt, err := utils.GenerateSalt(10)
 	if err != nil {
-		fmt.Println("Error generating secure API key: ", err)
+		fmt.Println("Error generating salt...", err)
 		return types.UpdateUserResponse{
 			Success: false,
 		}, err
 	}
-	update["apiKey"] = *apiKey
+	fmt.Println("Salt:", salt)
+	update["salt"] = salt
 
+	hashedPassword, err := utils.HashPassword(req.Password + salt)
+	if err != nil {
+		fmt.Println("Error hashing password+salt:", err)
+
+		return types.UpdateUserResponse{
+			Success: false,
+		}, err
+	}
+	fmt.Println("Hashed password:", hashedPassword)
+
+	collection := db.MongoClient.Database(db.DbName).Collection(db.UserCollection)
+
+	//apiKey, err := utils.GenerateSecureAPIKey()
+	//if err != nil {
+	//	fmt.Println("Error generating secure API key: ", err)
+	//	return types.UpdateUserResponse{
+	//		Success: false,
+	//	}, err
+	//}
+	//update["apiKey"] = *apiKey
+	//
 	token, err := utils.GenerateAndStoreJWT(req.Username, req.SessionOption)
 	if err != nil {
 		fmt.Println("Error generating JWT: ", err)
@@ -60,7 +80,8 @@ func updateUser(req types.UpdateUserRequest) (types.UpdateUserResponse, error) {
 		}, err
 	}
 
-	_, err = collection.UpdateOne(ctx, bson.M{"username": req.Username}, bson.M{"$set": update})
+	var user types.User
+	err = collection.FindOneAndUpdate(ctx, bson.M{"username": req.Username}, bson.M{"$set": update}).Decode(&user)
 	if err != nil {
 		fmt.Println("Error attempting to update user: ", err)
 		return types.UpdateUserResponse{
@@ -71,6 +92,6 @@ func updateUser(req types.UpdateUserRequest) (types.UpdateUserResponse, error) {
 	return types.UpdateUserResponse{
 		Success: true,
 		Token:   token,
-		APIKey:  apiKey.Key,
+		APIKey:  user.APIKey.Key,
 	}, nil
 }
