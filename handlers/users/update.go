@@ -60,6 +60,7 @@ func updateUser(req types.UpdateUserRequest) (types.UpdateUserResponse, error) {
 		}, err
 	}
 	fmt.Println("Hashed password:", hashedPassword)
+	update["password"] = hashedPassword
 
 	collection := db.MongoClient.Database(db.DbName).Collection(db.UserCollection)
 
