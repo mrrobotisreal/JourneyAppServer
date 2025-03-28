@@ -2,3 +2,42 @@ INFO: 2025/03/28 00:21:35 logger.go:42: Daily logging initialized successfully
 INFO: 2025/03/28 00:21:35 logger.go:72: Daily logging initialized successfully
 INFO: 2025/03/28 00:25:04 login.go:128: Analytics logging error: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
 INFO: 2025/03/28 00:25:59 logger.go:42: Daily logging initialized successfully
+INFO: 2025/03/28 10:06:09 logger.go:42: Daily logging initialized successfully
+INFO: 2025/03/28 10:45:44 logger.go:42: Daily logging initialized successfully
+INFO: 2025/03/28 10:47:14 delete.go:112: Successfully deleted account for username tester1
+INFO: 2025/03/28 10:47:14 delete.go:108: Analytics logging error for delete account tester1: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 11:07:28 logger.go:42: Daily logging initialized successfully
+INFO: 2025/03/28 11:09:20 get.go:56: Successfully retrieved user: username=tester1
+INFO: 2025/03/28 11:16:13 logger.go:42: Daily logging initialized successfully
+INFO: 2025/03/28 11:19:10 create.go:66: Error inserting entry into database: user=tester1, error=Error 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`journey_app`.`entries`, CONSTRAINT `entries_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE)
+INFO: 2025/03/28 11:21:00 create.go:131: Successfully created entry 87a9cd7e-7f52-456c-8285-c6e3394f3edb for user tester1
+INFO: 2025/03/28 11:21:00 create.go:127: Analytics logging error for entry 87a9cd7e-7f52-456c-8285-c6e3394f3edb: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 11:59:34 logger.go:42: Daily logging initialized successfully
+INFO: 2025/03/28 12:04:28 get.go:178: Successfully retrieved entry: id=87a9cd7e-7f52-456c-8285-c6e3394f3edb, userId=00b0dd8a-beab-4ebf-a931-6966ed869e91, timestamp=2025-03-27 08:03:21 +0000 UTC
+INFO: 2025/03/28 12:04:28 get.go:174: Analytics logging error for entry 87a9cd7e-7f52-456c-8285-c6e3394f3edb: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 12:32:25 create.go:131: Successfully created entry 9007a9bc-179e-4a03-8799-6a2cdab7c3b8 for user tester1
+INFO: 2025/03/28 12:32:25 create.go:127: Analytics logging error for entry 9007a9bc-179e-4a03-8799-6a2cdab7c3b8: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 12:38:31 search.go:269: Successfully searched entries for user tester1: page=1, limit=50, count=2
+INFO: 2025/03/28 12:38:31 search.go:265: Analytics logging error for search entries user tester1: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 12:39:31 search.go:167: Error querying entries: user=tester1, error=Error 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE e.username = ? AND MATCH(e.text) AGAINST (? IN BOOLEAN MODE) ORDER BY e.ti' at line 3
+INFO: 2025/03/28 12:39:31 search.go:77: Error searching entries for user tester1: Error 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE e.username = ? AND MATCH(e.text) AGAINST (? IN BOOLEAN MODE) ORDER BY e.ti' at line 3
+INFO: 2025/03/28 13:01:32 logger.go:42: Daily logging initialized successfully
+INFO: 2025/03/28 13:01:43 search.go:170: Error querying entries: user=tester1, error=Error 1191 (HY000): Can't find FULLTEXT index matching the column list
+INFO: 2025/03/28 13:01:43 search.go:77: Error searching entries for user tester1: Error 1191 (HY000): Can't find FULLTEXT index matching the column list
+INFO: 2025/03/28 13:08:25 logger.go:42: Daily logging initialized successfully
+INFO: 2025/03/28 13:08:37 search.go:272: Successfully searched entries for user tester1: page=1, limit=50, count=1
+INFO: 2025/03/28 13:08:37 search.go:268: Analytics logging error for search entries user tester1: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 13:09:57 search.go:272: Successfully searched entries for user tester1: page=1, limit=50, count=2
+INFO: 2025/03/28 13:09:57 search.go:268: Analytics logging error for search entries user tester1: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 13:10:07 search.go:272: Successfully searched entries for user tester1: page=1, limit=50, count=1
+INFO: 2025/03/28 13:10:07 search.go:268: Analytics logging error for search entries user tester1: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 13:11:08 create.go:131: Successfully created entry 1cf092dd-b4fc-40df-8019-7305b51aa89d for user tester1
+INFO: 2025/03/28 13:11:08 create.go:127: Analytics logging error for entry 1cf092dd-b4fc-40df-8019-7305b51aa89d: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 13:16:05 update.go:179: Successfully updated entry: id=1cf092dd-b4fc-40df-8019-7305b51aa89d, userId=00b0dd8a-beab-4ebf-a931-6966ed869e91
+INFO: 2025/03/28 13:16:05 update.go:175: Analytics logging error for entry update 1cf092dd-b4fc-40df-8019-7305b51aa89d: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 13:16:17 search.go:272: Successfully searched entries for user tester1: page=1, limit=50, count=3
+INFO: 2025/03/28 13:16:17 search.go:268: Analytics logging error for search entries user tester1: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 13:22:48 delete.go:139: Successfully deleted entry: id=1cf092dd-b4fc-40df-8019-7305b51aa89d, userId=00b0dd8a-beab-4ebf-a931-6966ed869e91, timestamp=2025-03-27 09:06:21 +0000 UTC
+INFO: 2025/03/28 13:22:48 delete.go:135: Analytics logging error for entry deletion 1cf092dd-b4fc-40df-8019-7305b51aa89d: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 13:23:01 search.go:272: Successfully searched entries for user tester1: page=1, limit=50, count=2
+INFO: 2025/03/28 13:23:01 search.go:268: Analytics logging error for search entries user tester1: Error 1054 (42S22): Unknown column 'metadata' in 'field list'

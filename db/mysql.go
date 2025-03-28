@@ -58,6 +58,7 @@ func createTables() error {
 		INDEX idx_user_timestamp (user_id, timestamp),
 		INDEX idx_username (username)
 	);`
+	createEntriesFulltextIndex := `CREATE FULLTEXT INDEX idx_entries_text ON entries(text);`
 
 	entryLocationsTable := `
 	CREATE TABLE IF NOT EXISTS entry_locations (
@@ -109,6 +110,9 @@ func createTables() error {
 		return err
 	}
 	if _, err := SDB.Exec(entriesTable); err != nil {
+		return err
+	}
+	if _, err := SDB.Exec(createEntriesFulltextIndex); err != nil {
 		return err
 	}
 	if _, err := SDB.Exec(entryLocationsTable); err != nil {
