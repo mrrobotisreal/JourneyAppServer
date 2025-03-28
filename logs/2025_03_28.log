@@ -1,0 +1,4 @@
+INFO: 2025/03/28 00:21:35 logger.go:42: Daily logging initialized successfully
+INFO: 2025/03/28 00:21:35 logger.go:72: Daily logging initialized successfully
+INFO: 2025/03/28 00:25:04 login.go:128: Analytics logging error: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 00:25:59 logger.go:42: Daily logging initialized successfully

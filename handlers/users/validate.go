@@ -3,13 +3,10 @@ package userHandlers
 import (
 	"JourneyAppServer/db"
 	"JourneyAppServer/types"
-	"context"
+	"database/sql"
 	"encoding/json"
 	"fmt"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
 	"net/http"
-	"time"
 )
 
 func ValidateUsernameHandler(w http.ResponseWriter, r *http.Request) {
@@ -38,27 +35,49 @@ func ValidateUsernameHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func validateUsername(req types.ValidateUsernameRequest) (types.ValidateUsernameResponse, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
+	var exists bool
 
-	collection := db.MongoClient.Database(db.DbName).Collection(db.UserCollection)
+	query := `SELECT EXISTS(SELECT 1 FROM users WHERE username = ?)`
 
-	var userResult types.User
-	err := collection.FindOne(ctx, bson.M{"username": req.Username}).Decode(&userResult)
+	err := db.SDB.QueryRow(query, req.Username).Scan(&exists)
 	if err != nil {
-		if err == mongo.ErrNoDocuments {
+		if err == sql.ErrNoRows {
 			return types.ValidateUsernameResponse{
 				UsernameAvailable: true,
 			}, nil
 		}
-
-		fmt.Println("Error finding user in the database:", err)
 		return types.ValidateUsernameResponse{
 			UsernameAvailable: false,
 		}, err
 	}
 
 	return types.ValidateUsernameResponse{
-		UsernameAvailable: false,
+		UsernameAvailable: !exists,
 	}, nil
+
+	//------------------------Below is old MongoDB code-------------------------------------------//
+
+	//ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	//defer cancel()
+	//
+	//collection := db.MongoClient.Database(db.DbName).Collection(db.UserCollection)
+	//
+	//var userResult types.User
+	//err = collection.FindOne(ctx, bson.M{"username": req.Username}).Decode(&userResult)
+	//if err != nil {
+	//	if err == mongo.ErrNoDocuments {
+	//		return types.ValidateUsernameResponse{
+	//			UsernameAvailable: true,
+	//		}, nil
+	//	}
+	//
+	//	fmt.Println("Error finding user in the database:", err)
+	//	return types.ValidateUsernameResponse{
+	//		UsernameAvailable: false,
+	//	}, err
+	//}
+	//
+	//return types.ValidateUsernameResponse{
+	//	UsernameAvailable: false,
+	//}, nil
 }

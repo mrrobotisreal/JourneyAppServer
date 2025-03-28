@@ -6,7 +6,9 @@ import (
 	entriesHandlers "JourneyAppServer/handlers/entries"
 	userHandlers "JourneyAppServer/handlers/users"
 	"JourneyAppServer/middleware"
+	"JourneyAppServer/utils"
 	"context"
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
@@ -17,6 +19,19 @@ import (
 )
 
 func main() {
+	if err := utils.SetupDailyLogging(); err != nil {
+		panic(err)
+	}
+	if err := db.InitMySQL(); err != nil {
+		log.Fatalf("Failed to init MySQL: %v", err)
+	}
+	defer func(SDB *sql.DB) {
+		err := SDB.Close()
+		if err != nil {
+			log.Fatalf("Failed to close MySQL database: %v", err)
+		}
+	}(db.SDB)
+
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
