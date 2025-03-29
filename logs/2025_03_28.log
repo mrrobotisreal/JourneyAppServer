@@ -89,3 +89,22 @@ INFO: 2025/03/28 23:21:59 search.go:272: Successfully searched entries for user 
 INFO: 2025/03/28 23:21:59 search.go:268: Analytics logging error for search entries user tester1: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
 INFO: 2025/03/28 23:22:03 search.go:272: Successfully searched entries for user tester1: page=1, limit=50, count=4
 INFO: 2025/03/28 23:22:03 search.go:268: Analytics logging error for search entries user tester1: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 23:46:23 logger.go:42: Daily logging initialized successfully
+INFO: 2025/03/28 23:51:01 addImage.go:127: Successfully updated images for entry e42b8b23-db36-449b-a7db-e7fc71fb06d0 (new count: 3) for user 00b0dd8a-beab-4ebf-a931-6966ed869e91
+INFO: 2025/03/28 23:51:01 addImage.go:123: Analytics logging error for image addition to entry e42b8b23-db36-449b-a7db-e7fc71fb06d0: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 23:51:48 addLocation.go:128: Successfully updated locations for entry e42b8b23-db36-449b-a7db-e7fc71fb06d0 (new count: 0) for user 00b0dd8a-beab-4ebf-a931-6966ed869e91
+INFO: 2025/03/28 23:51:48 addLocation.go:124: Analytics logging error for location addition to entry e42b8b23-db36-449b-a7db-e7fc71fb06d0: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 23:52:37 search.go:272: Successfully searched entries for user tester1: page=1, limit=50, count=4
+INFO: 2025/03/28 23:52:37 search.go:268: Analytics logging error for search entries user tester1: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 23:52:54 search.go:272: Successfully searched entries for user tester1: page=1, limit=50, count=4
+INFO: 2025/03/28 23:52:54 search.go:268: Analytics logging error for search entries user tester1: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 23:56:22 addLocation.go:128: Successfully updated locations for entry e42b8b23-db36-449b-a7db-e7fc71fb06d0 (new count: 1) for user 00b0dd8a-beab-4ebf-a931-6966ed869e91
+INFO: 2025/03/28 23:56:22 addLocation.go:124: Analytics logging error for location addition to entry e42b8b23-db36-449b-a7db-e7fc71fb06d0: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 23:56:29 search.go:272: Successfully searched entries for user tester1: page=1, limit=50, count=4
+INFO: 2025/03/28 23:56:29 search.go:268: Analytics logging error for search entries user tester1: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 23:56:58 addTag.go:128: Successfully updated tags for entry e42b8b23-db36-449b-a7db-e7fc71fb06d0 (new count: 1) for user 00b0dd8a-beab-4ebf-a931-6966ed869e91
+INFO: 2025/03/28 23:56:58 addTag.go:124: Analytics logging error for tag addition to entry e42b8b23-db36-449b-a7db-e7fc71fb06d0: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 23:57:03 create.go:131: Successfully created entry 494b323b-7957-40b1-9864-d1ac3a041e3d for user tester1
+INFO: 2025/03/28 23:57:03 create.go:127: Analytics logging error for entry 494b323b-7957-40b1-9864-d1ac3a041e3d: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
+INFO: 2025/03/28 23:57:21 search.go:272: Successfully searched entries for user tester1: page=1, limit=50, count=5
+INFO: 2025/03/28 23:57:21 search.go:268: Analytics logging error for search entries user tester1: Error 1054 (42S22): Unknown column 'metadata' in 'field list'
