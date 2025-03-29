@@ -107,7 +107,7 @@ func DeleteImage(prefix string) types.DeleteImageResponse {
 		Key:    aws.String(prefix),
 	})
 	if err != nil {
-		fmt.Println("Error deleting the object!")
+		fmt.Println("Error deleting the object! ", err)
 		return types.DeleteImageResponse{
 			Success: false,
 		}

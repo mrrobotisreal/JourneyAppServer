@@ -3,6 +3,8 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	"github.com/go-sql-driver/mysql"
+	"log"
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -58,7 +60,6 @@ func createTables() error {
 		INDEX idx_user_timestamp (user_id, timestamp),
 		INDEX idx_username (username)
 	);`
-	createEntriesFulltextIndex := `CREATE FULLTEXT INDEX idx_entries_text ON entries(text);`
 
 	entryLocationsTable := `
 	CREATE TABLE IF NOT EXISTS entry_locations (
@@ -106,13 +107,21 @@ func createTables() error {
 		INDEX idx_event_type (event_type)
 	);`
 
+	// Indexes
+	indexQueries := []string{
+		`CREATE INDEX idx_entries_username ON entries(username)`,
+		`CREATE INDEX idx_entries_id_user_timestamp ON entries(entry_id, user_id, timestamp)`,
+		`CREATE INDEX idx_entries_username_timestamp ON entries(username, timestamp)`,
+		`CREATE FULLTEXT INDEX idx_entries_text ON entries(text)`,
+		`CREATE INDEX idx_entry_locations_entry_id ON entry_locations(entry_id)`,
+		`CREATE INDEX idx_entry_tags_entry_id_key ON entry_tags(entry_id, tag_key)`,
+		`CREATE INDEX idx_entry_images_entry_id ON entry_images(entry_id)`,
+	}
+
 	if _, err := SDB.Exec(usersTable); err != nil {
 		return err
 	}
 	if _, err := SDB.Exec(entriesTable); err != nil {
-		return err
-	}
-	if _, err := SDB.Exec(createEntriesFulltextIndex); err != nil {
 		return err
 	}
 	if _, err := SDB.Exec(entryLocationsTable); err != nil {
@@ -126,6 +135,17 @@ func createTables() error {
 	}
 	if _, err := SDB.Exec(analyticsEventsTable); err != nil {
 		return err
+	}
+	for _, query := range indexQueries {
+		_, err := SDB.Exec(query)
+		if err != nil {
+			if mysqlErr, ok := err.(*mysql.MySQLError); ok && mysqlErr.Number == 1061 {
+				log.Printf("Index already exists, skipping: %s", query)
+				continue
+			}
+			log.Printf("Error executing query: %s, error: %v", query, err)
+			return err
+		}
 	}
 
 	return nil
